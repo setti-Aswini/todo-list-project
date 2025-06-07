@@ -1,54 +1,60 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f2f5;
-  padding: 30px;
-  text-align: center;
+  background-color: #f1f1f1;
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
 }
 
 .container {
-  background: #fff;
-  max-width: 400px;
-  margin: auto;
-  padding: 20px;
-  border-radius: 12px;
+  background-color: white;
+  padding: 20px 30px;
+  border-radius: 15px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 400px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 20px;
 }
 
 .input-group {
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
-#taskInput {
+input#taskInput {
   flex: 1;
   padding: 10px;
   font-size: 16px;
 }
 
-#addBtn {
-  padding: 10px 15px;
+button#addTask {
+  padding: 10px;
   font-size: 16px;
   cursor: pointer;
 }
 
-#taskList {
-  list-style-type: none;
+ul#taskList {
+  list-style: none;
   padding: 0;
 }
 
-li {
-  background: #e9ecef;
+ul#taskList li {
+  background-color: #e9ecef;
   padding: 10px;
-  margin-top: 8px;
+  margin-bottom: 8px;
+  border-radius: 8px;
   display: flex;
   justify-content: space-between;
-  border-radius: 8px;
+  align-items: center;
 }
 
-  .task-item.completed {
+ul#taskList li.completed {
   text-decoration: line-through;
   color: gray;
-  opacity: 0.7;
-  }
 }
