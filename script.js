@@ -1,55 +1,19 @@
-const taskInput = document.getElementById("taskInput");
-const addTaskBtn = document.getElementById("addTask");
-const taskList = document.getElementById("taskList");
+function addTask() {
+  const taskInput = document.getElementById("taskInput");
+  const taskText = taskInput.value.trim();
 
-function loadTasks() {
-  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  tasks.forEach(task => addTaskToDOM(task.text, task.completed));
-}
+  if (taskText === "") return;
 
-function saveTasks() {
-  const tasks = [];
-  document.querySelectorAll("#taskList li").forEach(li => {
-    tasks.push({
-      text: li.querySelector("span").innerText,
-      completed: li.classList.contains("completed")
-    });
-  });
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-function addTaskToDOM(taskText, completed = false) {
   const li = document.createElement("li");
-  const span = document.createElement("span");
-  span.innerText = taskText;
+  li.textContent = taskText;
 
-  li.appendChild(span);
-  if (completed) li.classList.add("completed");
+  // Add delete button
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "❌";
+  deleteBtn.onclick = () => li.remove();
 
-  // Toggle complete on click
-  li.addEventListener("click", () => {
-    li.classList.toggle("completed");
-    saveTasks();
-  });
+  li.appendChild(deleteBtn);
+  document.getElementById("taskList").appendChild(li);
 
-  // Right-click to delete
-  li.addEventListener("contextmenu", e => {
-    e.preventDefault();
-    li.remove();
-    saveTasks();
-  });
-
-  taskList.appendChild(li);
+  taskInput.value = "";
 }
-
-addTaskBtn.addEventListener("click", () => {
-  const task = taskInput.value.trim();
-  if (task) {
-    addTaskToDOM(task);
-    saveTasks();
-    taskInput.value = "";
-  }
-});
-
-// Load from localStorage on page load
-window.addEventListener("DOMContentLoaded", loadTasks);
