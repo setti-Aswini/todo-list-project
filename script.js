@@ -1,53 +1,55 @@
 const taskInput = document.getElementById("taskInput");
-const addTaskButton = document.getElementById("addTask");
+const addTaskBtn = document.getElementById("addTask");
 const taskList = document.getElementById("taskList");
 
-// Load tasks from localStorage on page load
-window.onload = () => {
+function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  tasks.forEach(task => {
-    createTask(task.text, task.completed);
+  tasks.forEach(task => addTaskToDOM(task.text, task.completed));
+}
+
+function saveTasks() {
+  const tasks = [];
+  document.querySelectorAll("#taskList li").forEach(li => {
+    tasks.push({
+      text: li.querySelector("span").innerText,
+      completed: li.classList.contains("completed")
+    });
   });
-};
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
-addTaskButton.addEventListener("click", () => {
-  const taskText = taskInput.value.trim();
-  if (taskText !== "") {
-    createTask(taskText);
-    taskInput.value = "";
-  }
-});
-
-function createTask(text, completed = false) {
+function addTaskToDOM(taskText, completed = false) {
   const li = document.createElement("li");
-  li.textContent = text;
-  li.classList.add("task-item");
+  const span = document.createElement("span");
+  span.innerText = taskText;
+
+  li.appendChild(span);
   if (completed) li.classList.add("completed");
 
-  // Click to mark complete
+  // Toggle complete on click
   li.addEventListener("click", () => {
     li.classList.toggle("completed");
     saveTasks();
   });
 
   // Right-click to delete
-  li.addEventListener("contextmenu", (e) => {
+  li.addEventListener("contextmenu", e => {
     e.preventDefault();
     li.remove();
     saveTasks();
   });
 
   taskList.appendChild(li);
-  saveTasks();
 }
 
-function saveTasks() {
-  const tasks = [];
-  document.querySelectorAll(".task-item").forEach(li => {
-    tasks.push({
-      text: li.textContent,
-      completed: li.classList.contains("completed")
-    });
-  });
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
+addTaskBtn.addEventListener("click", () => {
+  const task = taskInput.value.trim();
+  if (task) {
+    addTaskToDOM(task);
+    saveTasks();
+    taskInput.value = "";
+  }
+});
+
+// Load from localStorage on page load
+window.addEventListener("DOMContentLoaded", loadTasks);
